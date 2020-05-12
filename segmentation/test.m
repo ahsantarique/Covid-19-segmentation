@@ -2,10 +2,23 @@
 %If you want to convert this into a function, the following variables need
 %to be set
 %inputfile, visfile,maxIterationbCluster,lambda_1,lambda_2,lambda_3,gamma_1,gamma_2,gamma_3,beta,nbclustersV,nbclusterU,k,segLimit
-function [] = demo_spatial_seg_exog3_fast(resultsoutputdir,inputfile,visfile,laplacefile,k,segLimit,lam1,lam2,lam3,beta,nbclustersV,nbclustersU)
-    %resultsoutputdir = '../result/Harvey_exog/';
-    %inputfile = '../data/Harvey_60min_sample_normalized.csv';
-    %visfile = '../data/Harvey_60min_sample.csv';
+function [] = test()
+    resultsoutputdir = '../result/covid-19/';
+    inputfile = '../covid-19-dataset/processed-data/final-us-state-cases.csv';
+    visfile = '../covid-19-dataset/processed-data/final-us-state-cases.csv';
+    laplacefile = '../covid-19-dataset/processed-data/states_laplace.mat';
+	%Hyperparameter.
+    iter = 1000;
+	lam1=[0.1];
+    lam2=[0.1];
+    lam3=[0.1,0.3,0.5];
+    beta=[0.7,1];
+	nbclustersV=[3];
+    nbclustersU=[3];
+	k=2; %default_val 2
+    segLimit=10; %default_val 10
+    
+    
     paths = genpath('libs/ncut');
 	paths2 = genpath('libs/linspecer');
     fprintf('results dir %s\n',resultsoutputdir);
@@ -26,15 +39,7 @@ function [] = demo_spatial_seg_exog3_fast(resultsoutputdir,inputfile,visfile,lap
 	w = randn(size(X)) * corruption;
 	X = X + w;
 
-	%Hyperparameter.
-    iter = 1000;
-	%lam1=[0.1];
-    %lam2=[0.1];
-    %lam3=[0.1,0.3,0.5];
-    %beta=[0.7,1];
-	%nbclustersV=[3];
-	k=str2num(k); %default_val 2
-    segLimit=str2num(segLimit); %default_val 10
+
     lossfileName = strcat(resultsoutputdir,'loss.txt');
 	lossID = fopen(lossfileName,'w');
     fprintf(lossID,'lambda1, lambda2, lambda3, beta1, gam1, gam2, gam3, clusterV, clusterU, loss\n');
