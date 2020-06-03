@@ -3,20 +3,20 @@
 %to be set
 %inputfile, visfile,maxIterationbCluster,lambda_1,lambda_2,lambda_3,gamma_1,gamma_2,gamma_3,beta,nbclustersV,nbclusterU,k,segLimit
 function [] = test()
-    resultsoutputdir = '../result/covid-19/';
-    inputfile = '../covid-19-dataset/processed-data/final-us-state-cases.csv';
-    visfile = '../covid-19-dataset/processed-data/final-us-state-cases.csv';
-    laplacefile = '../covid-19-dataset/processed-data/states_laplace.mat';
+    resultsoutputdir = '../result/covid-19/states/';
+    inputfile = '../covid-19-dataset/processed-data/states/standardized-us-state-cases.csv';
+    visfile = '../covid-19-dataset/processed-data/states/normalized-us-state-cases.csv';
+    laplacefile = '../covid-19-dataset/processed-data/states/states_laplace.mat';
 	%Hyperparameter.
     iter = 1000;
-	lam1=[0.1];
-    lam2=[0.1];
-    lam3=[0.1,0.3,0.5];
-    beta=[0.7,1];
+	lam1=0.1:0.6:1;
+    lam2=0.1:0.6:1;
+    lam3=0.1:0.6:1;
+    beta=0.7:0.3:1;
 	nbclustersV=[3];
     nbclustersU=[3];
 	k=2; %default_val 2
-    segLimit=10; %default_val 10
+    segLimit=5; %default_val 10
     
     
     paths = genpath('libs/ncut');
@@ -40,7 +40,7 @@ function [] = test()
 	X = X + w;
 
 
-    lossfileName = strcat(resultsoutputdir,'loss.txt');
+    lossfileName = strcat(resultsoutputdir,'loss.csv');
 	lossID = fopen(lossfileName,'w');
     fprintf(lossID,'lambda1, lambda2, lambda3, beta1, gam1, gam2, gam3, clusterV, clusterU, loss\n');
     for nbClusterV=nbclustersV

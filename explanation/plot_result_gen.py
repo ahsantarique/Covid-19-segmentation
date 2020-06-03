@@ -31,12 +31,12 @@ def plot_result(data_dir, clique, adj_file, filename, E_file, segfile, save_dir,
                 if a == b:
                     continue
                 G.add_edge(a, b)
-    print 'reading the segmentation result'
+    print ('reading the segmentation result')
     with open(save_dir + segfile) as f:
         line = f.readline()
     #S = ast.literal_eval(line.strip())
     S = [int(x) for x in line.strip().split(',')]
-    print 'reading the explanation'
+    print ('reading the explanation')
     E = np.loadtxt(save_dir + E_file)
     #E = (E - E.min(0)) / (E.max(0) - E.min(0))
 
@@ -46,7 +46,7 @@ def plot_result(data_dir, clique, adj_file, filename, E_file, segfile, save_dir,
 
     #plt.gca().set_color_cycle([colormap(i) for i in county_index])
     plt.gca().set_prop_cycle('color',[colormap(i) for i in county_index])
-    print 'plotting the segmentation'
+    print ('plotting the segmentation')
     for i in range(len(counties)):
         plt.plot(range(l), data[:, i])
     for s in S:
@@ -55,7 +55,7 @@ def plot_result(data_dir, clique, adj_file, filename, E_file, segfile, save_dir,
     plt.yticks(fontsize=15, rotation = 45)
     plt.savefig(save_dir + savefile +'.pdf')
     plt.clf()
-    print 'plotting the explanations'
+    print ('plotting the explanations')
     segments = []
     bd = 0
     for i in range(len(S)):
@@ -68,7 +68,7 @@ def plot_result(data_dir, clique, adj_file, filename, E_file, segfile, save_dir,
         else:
             rc = len(data) - bd
         segments.append([lc, rc])
-    sf = open(save_dir + savefile + '_cut' + '_impC.txt', 'wb')
+    sf = open(save_dir + savefile + '_cut' + '_impC.txt', 'w+')
     for i in range(len(segments)):
         imp_c = get_imp_c(E, i, thres) 
         sf.write('cut ' + str(i) + '\n')
@@ -172,13 +172,13 @@ if __name__ == '__main__':
     #ym = 900000
     #xm = 180
 
-    data_dir = '../data/'
-    filename = 'Harvey_60min_sample.csv'
-    save_dir = '../result/Harvey_expl/'
-    segfile = 'segV_lam1_2_lam2_0.1_lam3_0.1_clusV_3.csv'
-    adj_file = 'Harvey.adjlist'
-    E_file = 'E_0.2.txt'
-    savefile = 'plot'
+    # data_dir = '../data/'
+    # filename = 'Harvey_60min_sample.csv'
+    # save_dir = '../result/Harvey_expl/'
+    # segfile = 'segV_lam1_2_lam2_0.1_lam3_0.1_clusV_3.csv'
+    # adj_file = 'Harvey.adjlist'
+    # E_file = 'E_0.2.txt'
+    # savefile = 'plot'
     clique = True
     thres = 0.8
     ym=120000

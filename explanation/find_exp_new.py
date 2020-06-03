@@ -29,7 +29,7 @@ def find_segmentation(data_dir, clique, adj_file, filename, segfile, alpha, lmda
     max_iter_seg: the maximum number of itereation for finding the segmentation
     max_iter: the maximum number of total iterations between finding the segmentation and the explanation
     """
-    print 'reading the data'
+    print('reading the data')
     with open(data_dir + filename)as f:
         lines = f.readlines()
     counties = lines[0].strip().split(',')
@@ -40,7 +40,7 @@ def find_segmentation(data_dir, clique, adj_file, filename, segfile, alpha, lmda
         data.append([float(x) for x in line.strip().split(',')])
     data = np.array(data)
     l = len(lines)
-    print 'reading the network'
+    print('reading the network')
     #G = nx.read_adjlist(data_dir + hurricane + '.adjlist', delimiter = '\t')
     if not clique:
         G = nx.read_adjlist(data_dir + adj_file, delimiter = '\t')
@@ -54,8 +54,9 @@ def find_segmentation(data_dir, clique, adj_file, filename, segfile, alpha, lmda
         #fileName = '../result/Harvey_Exog3/U_affinity_matrix_lam1_2_lam2_0.1_lam3_0.1_clusV_3.csv'
         #fileName = '../result/Irma_Exog3/U_affinity_matrix_lam1_0.1_lam2_0.1_lam3_0.1_clusV_4.csv'
         #fileName = file_affinityU#'../result/Matthew_Exog3/U_affinity_matrix_lam1_2_lam2_0.5_lam3_0.5_clusV_4.csv'
-        affinityU = pd.read_csv(save_dir+file_affinityU, delimiter=',',header=None)
-        Au = affinityU.as_matrix()
+        affinityU = pd.read_csv(file_affinityU, delimiter=',',header=None)
+        print('reading affinity u...')
+        Au = affinityU.to_numpy()
         Unorm = (Au - np.amin(Au)) / (np.amax(Au)-np.amin(Au))
         #not necessary now
         '''
@@ -77,9 +78,10 @@ def find_segmentation(data_dir, clique, adj_file, filename, segfile, alpha, lmda
     k = len(S)
     diff = get_diff(data, l, k, S)
     E = callMatlab(diff, L, alpha, lmda, save_dir,matlab)
-    print 'saving results'
+    print ('saving results')
+    print(S)
     save_result(S, E, k, save_dir, save_file)
-    print 'plotting results'
+    print ('plotting results')
     ym=120000
     xm=300
     E_file=save_dir+'E_'+str(alpha)+'.txt'
@@ -100,9 +102,10 @@ def callMatlab(diff, L, alpha, lmda, save_dir,matlab):
     #matlab_cmd += 'find_exp(diff, L, ' + str(alpha) + ',' + str(lmda) + ',\'' + save_dir + '\');exit;'
     scipy.io.savemat(save_dir + 'dif.mat', mdict = {'dif': diff})
     scipy.io.savemat(save_dir + 'L.mat', mdict = {'L': L})
+    
     matlab_cmd = 'find_exp(' + str(alpha) + ',' + str(lmda) + ',\'' + save_dir + '\');exit;'
     print("matlab -nosplash -nojvm -r ",matlab_cmd)
-    subprocess.call([matlab, "-nosplash", "-nojvm", "-r", matlab_cmd])
+    subprocess.call(['matlab', "-nosplash", "-nojvm", "-r", matlab_cmd])
     Efile = 'E_'+str(alpha)+'.txt'
     with open(save_dir + Efile) as f:
         lines = f.readlines()
@@ -117,9 +120,8 @@ def callMatlab(diff, L, alpha, lmda, save_dir,matlab):
 
 def save_result(S, E, k, save_dir, save_file):
     #sf = open(save_dir + 'S_' + str(k) + '.txt', 'wb')
-    sf = open(save_dir + 'S.txt', 'wb')
-    sf.write(str(S))
-    sf.close()
+    with open(save_dir + 'S.txt', 'w+') as sf:
+        sf.write(str(S))
     np.save(save_dir + 'E_' + str(k) + '.txt', E)
     #np.save(save_dir + 'E.txt', E)
     #np.save(save_dir + save_file, E)
@@ -161,7 +163,7 @@ def new_seg_2(data, pre_S, E, step, save_dir, data_dir, hurricane):
     #matlab_cmd = 'demo_hurricane_seg_exp_fast;exit;'
     matlab_cmd = 'seg_exp_fast(\'' + data_dir + hurricane + '_interp.csv\','
     matlab_cmd += '\'' + save_dir + '\', ' + str(nclusters) + ',' + str(max_iter_seg) + ');exit;' 
-    print matlab_cmd
+    print (matlab_cmd)
     subprocess.call([matlab, "-nosplash", "-nojvm", "-r", matlab_cmd])
     with open(save_dir + 'temporal_segments.txt')as f:
         line = f.readlines()[0]
@@ -395,18 +397,39 @@ if __name__ == '__main__':
     save_dir = '../result/OSC_Hurricane_Results/irma/' + non + '/'
     adj_file = 'Irma.adjlist'
     segfile = 'segmentation.txt'
-    '''
-    matlab= sys.argv[1]
-    data_dir = sys.argv[2]#'../data/'
-    filename = sys.argv[3]#'Matthew_60min_sample.csv'
-    save_dir = sys.argv[4]#'../result/OSC_Hurricane_Results/matthew/' + non + '/'
-    adj_file = sys.argv[5]#'Matthew.adjlist'
-    segfile = sys.argv[6]#'segmentation.txt'
-    file_affinityU=sys.argv[7]
+       # data_dir = '../data/'
+    # filename = 'Harvey_60min_sample.csv'
+    # save_dir = '../result/Harvey_expl/'
+    # segfile = 'segV_lam1_2_lam2_0.1_lam3_0.1_clusV_3.csv'
+    # adj_file = 'Harvey.adjlist'
+    # E_file = 'E_0.2.txt'
+    # savefile = 'plot' '''
+    matlab= 'find_exp.m'
+    data_dir = '../covid-19-dataset/processed-data/states/'
+    filename = 'normalized-us-state-cases.csv'
+    save_dir = '../result/'
+    adj_file = 'us-adj.csv'
+    segfile = '../result/covid-19/states/segV_lam1_0.7_lam2_0.7_lam3_0.1_clusV_3_l_2_clusU_3.csv'
+    file_affinityU='../result/covid-19/states/U_affinity_matrix_lam1_0.7_lam2_0.7_lam3_0.1_clusV_3_l_2_clusU_3.csv'
 
-    alpha = sys.argv[8]#0.2 #liangzhe's part
-    lmda = sys.argv[9]#0.001 #liangzhe's part
-    nclusters=sys.argv[10] #nikhil part
+    alpha = 0.2 #liangzhe's part
+    lmda = 0.001 #liangzhe's part
+    nclusters= 3 #nikhil part
+
+
+    # matlab= sys.argv[1]
+    # data_dir = sys.argv[2]#'../data/'
+    # filename = sys.argv[3]#'Matthew_60min_sample.csv'
+    # save_dir = sys.argv[4]#'../result/OSC_Hurricane_Results/matthew/' + non + '/'
+    # adj_file = sys.argv[5]#'Matthew.adjlist'
+    # segfile = sys.argv[6]#'segmentation.txt'
+    # file_affinityU=sys.argv[7]
+
+    # alpha = sys.argv[8]#0.2 #liangzhe's part
+    # lmda = sys.argv[9]#0.001 #liangzhe's part
+    # nclusters=sys.argv[10] #nikhil part
+
+
     step = 20  #liangzhe's part
     thres = 40  #liangzhe's part
     max_iter_seg = 200 #nikhil part
