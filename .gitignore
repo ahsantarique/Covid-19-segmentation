@@ -1,1 +1,6 @@
-.ipynb_checkpoints/*
+.ipynb_checkpoints/preprocessing_states-checkpoint.ipynb
+.ipynb_checkpoints/
+.ipynb_checkpoints/*.ipynb
+result/
+.DS_Store
+*.DS_Store

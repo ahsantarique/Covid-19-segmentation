@@ -3,16 +3,16 @@
 %to be set
 %inputfile, visfile,maxIterationbCluster,lambda_1,lambda_2,lambda_3,gamma_1,gamma_2,gamma_3,beta,nbclustersV,nbclusterU,k,segLimit
 function [] = test()
-    resultsoutputdir = '../result/covid-19/states/';
-    inputfile = '../covid-19-dataset/processed-data/states/standardized-us-state-cases.csv';
-    visfile = '../covid-19-dataset/processed-data/states/normalized-us-state-cases.csv';
-    laplacefile = '../covid-19-dataset/processed-data/states/states_laplace.mat';
+    resultsoutputdir = '../result/covid-19/';
+    inputfile = '../covid-19-dataset/processed-data/normalized-us-state-cases.csv';
+    visfile = '../covid-19-dataset/processed-data/final-us-state-cases.csv';
+    laplacefile = '../covid-19-dataset/processed-data/states_laplace.mat';
 	%Hyperparameter.
     iter = 1000;
-	lam1=0.1:0.6:1;
-    lam2=0.1:0.6:1;
-    lam3=0.1:0.6:1;
-    beta=0.7:0.3:1;
+	lam1=[0.7];
+    lam2=[0.7];
+    lam3=[0.5];
+    beta=[0.8];
 	nbclustersV=[3];
     nbclustersU=[3];
 	k=2; %default_val 2
@@ -31,6 +31,8 @@ function [] = test()
 
 	X = csvread(inputfile,1);
 	Y = csvread(visfile,1); 
+    
+    disp(X)
 
 	X=X'; %Size(X) will be equal to 366 X 625
 	Y=Y'; %This is the data to visualize 366 X 625.
