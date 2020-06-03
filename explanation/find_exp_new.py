@@ -406,7 +406,7 @@ if __name__ == '__main__':
     # savefile = 'plot' '''
     matlab= 'find_exp.m'
     data_dir = '../covid-19-dataset/processed-data/states/'
-    filename = 'normalized-us-state-cases.csv'
+    filename = 'standardized-us-state-cases.csv'
     save_dir = '../result/'
     adj_file = 'us-adj.csv'
     segfile = '../result/covid-19/states/segV_lam1_0.7_lam2_0.7_lam3_0.1_clusV_3_l_2_clusU_3.csv'

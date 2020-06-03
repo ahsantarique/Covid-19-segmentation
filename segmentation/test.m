@@ -4,18 +4,18 @@
 %inputfile, visfile,maxIterationbCluster,lambda_1,lambda_2,lambda_3,gamma_1,gamma_2,gamma_3,beta,nbclustersV,nbclusterU,k,segLimit
 function [] = test()
     resultsoutputdir = '../result/covid-19/';
-    inputfile = '../covid-19-dataset/processed-data/normalized-us-state-cases.csv';
-    visfile = '../covid-19-dataset/processed-data/final-us-state-cases.csv';
-    laplacefile = '../covid-19-dataset/processed-data/states_laplace.mat';
+    inputfile = '../covid-19-dataset/processed-data/states/standardized-us-state-cases.csv';
+    visfile = '../covid-19-dataset/processed-data/states/final-us-state-cases.csv';
+    laplacefile = '../covid-19-dataset/processed-data/states/states_laplace.mat';
 	%Hyperparameter.
     iter = 1000;
-	lam1=[0.7];
-    lam2=[0.7];
-    lam3=[0.5];
-    beta=[0.8];
-	nbclustersV=[3];
-    nbclustersU=[3];
-	k=2; %default_val 2
+    lam1=0.1:0.1:0.9;
+    lam2=0.1:0.1:0.9;
+    lam3=0.1:0.1:0.9;
+    beta=1;
+    nbclustersV=[4,5];
+    nbclustersU=[4,5];
+    k=2; %default_val 2
     segLimit=5; %default_val 10
     
     
