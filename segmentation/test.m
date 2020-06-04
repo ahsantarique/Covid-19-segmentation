@@ -9,14 +9,14 @@ function [] = test()
     laplacefile = '../covid-19-dataset/processed-data/states/states_laplace.mat';
 	%Hyperparameter.
     iter = 1000;
-    lam1=0.1:0.1:0.9;
-    lam2=0.1:0.1:0.9;
-    lam3=0.1:0.1:0.9;
+    lam1=0.01:0.01:0.2;
+    lam2=0.1:0.01:0.5;
+    lam3=0.1:0.01:0.2;
     beta=1;
-    nbclustersV=[4,5];
-    nbclustersU=[4,5];
+    nbclustersV=[3,4];
+    nbclustersU=[3,4];
     k=2; %default_val 2
-    segLimit=5; %default_val 10
+    segLimit=10; %default_val 10
     
     
     paths = genpath('libs/ncut');
@@ -32,8 +32,6 @@ function [] = test()
 	X = csvread(inputfile,1);
 	Y = csvread(visfile,1); 
     
-    disp(X)
-
 	X=X'; %Size(X) will be equal to 366 X 625
 	Y=Y'; %This is the data to visualize 366 X 625.
 	corruption = 0;
@@ -43,7 +41,7 @@ function [] = test()
 
 
     lossfileName = strcat(resultsoutputdir,'loss.csv');
-	lossID = fopen(lossfileName,'w');
+	lossID = fopen(lossfileName,'w+');
     fprintf(lossID,'lambda1, lambda2, lambda3, beta1, gam1, gam2, gam3, clusterV, clusterU, loss\n');
     for nbClusterV=nbclustersV
 		for nbClusterU=nbclustersU
@@ -91,8 +89,8 @@ function [] = test()
                             disp('segment indices V');
                             disp(size(segmentindicesV));
 							%disp(size(segmentindicesU));
-                            fprintf(lossID,'%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%d,%.3f\n',lambda_1,lambda_2,lambda_3,...
-                                    beta_1,gamma_1,gamma_2,gamma_3,nbClusterV,funVal(it));
+                            fprintf(lossID,'%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%d,%d,%.3f\n',lambda_1,lambda_2,lambda_3,...
+                                    beta_1,gamma_1,gamma_2,gamma_3,nbClusterV, nbClusterU, funVal(it));
                             fV = prune_candidate_segment(.05,segmentindicesV,nbClusterV,size(X,2),0); 
                             %fU = prune_candidate_segment(.05,segmentindicesU,nbClusterU,size(X,1),0);
                             %fV=1;

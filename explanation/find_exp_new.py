@@ -409,8 +409,8 @@ if __name__ == '__main__':
     filename = 'standardized-us-state-cases.csv'
     save_dir = '../result/'
     adj_file = 'us-adj.csv'
-    segfile = '../result/covid-19/states/segV_lam1_0.7_lam2_0.7_lam3_0.1_clusV_3_l_2_clusU_3.csv'
-    file_affinityU='../result/covid-19/states/U_affinity_matrix_lam1_0.7_lam2_0.7_lam3_0.1_clusV_3_l_2_clusU_3.csv'
+    segfile = '../result/covid-19/states/segV_lam1_0.01_lam2_0.31_lam3_0.11_clusV_3_l_2_clusU_3.csv'
+    file_affinityU='../result/covid-19/states/U_affinity_matrix_lam1_0.01_lam2_0.31_lam3_0.11_clusV_3_l_2_clusU_3.csv'
 
     alpha = 0.2 #liangzhe's part
     lmda = 0.001 #liangzhe's part
